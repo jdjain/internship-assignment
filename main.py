@@ -22,24 +22,16 @@ class ScriptData():
         print('-'*65,'\n')
         print(self.data)
         return self.data
-    
-    def line_plot_data(self):
-        plt.plot(self.data['open'],label='open data')
-        plt.plot(self.data['close'],label='close data')
-        plt.xlabel('time series')
-        plt.ylabel('rate of the stock')
-        plt.legend()
-        plt.title('Stock Data')
-        plt.show()
         
     def signal(self):
-        series = np.where((self.data['open']<self.data['close']),'BUY','SELL')
+        series = np.where((self.data['open']>self.data['close']),'BUY','SELL')
         self.data['signal'] = series
         print('\n')
         print('-'*65)
         print('\t\t\t\t\t\tSignals')
         print('-'*65,'\n')
-        print(self.data[['timestamp','signal']])
+        self.data = self.data
+        print((self.data[['timestamp','signal']]).to_string())
     
     
         
@@ -65,14 +57,20 @@ def indicator1(data,timeperiod):
     print('\t\t\t\t\t\t Indicating Data')
     print('-'*65,'\n')
     print(dataframe)
+    plt.plot(dataframe['indicator'],label='indicator data')
+    plt.plot(data['close'],label='close data')
+    plt.xlabel('time series')
+    plt.ylabel('rate of the stock')
+    plt.legend()
+    plt.title('Stock Data')
+    plt.show()
     
     
 
     
 script_data = ScriptData()
-script_data.fetch_intraday_data('GOOGL')
-script_data.convert_intraday_data('GOOGL')
+script_data.fetch_intraday_data('NVDA')
+script_data.convert_intraday_data('NVDA')
 script_data.print_intraday_data()
-script_data.line_plot_data()
-indicator1(script_data.print_intraday_data(),timeperiod=5)
+indicator1(script_data.print_intraday_data(),timeperiod=4)
 script_data.signal()
